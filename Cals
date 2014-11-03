@@ -1,0 +1,104 @@
+package bimstack;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
+
+public class bima {
+public static void main(String[] a) throws IOException {
+		
+		String soal = "";
+		BufferedReader br = new BufferedReader(new InputStreamReader (System.in));
+		System.out.println(">>>>IMPLEMENTASI STACK<<<<");
+		System.out.println("Masukkan Soal : ");
+		soal = br.readLine();
+		Stack<String> data = new Stack<String>();
+		masukStack(soal, data);
+		int n = 10;
+		
+	
+		while (n > 0) {
+			int i = 0;
+			while (i < data.size()) {
+				if (data.elementAt(i).equals(")")) {
+					int[] c = new int[3];
+					c = proses(data, i);
+					newStack(data, c);
+					print(data);
+					i++;
+					br.readLine();
+				} 
+				
+				else {
+					i++;
+				}
+
+			}
+			n=n-1;
+		}
+
+	}
+
+
+	
+
+	private static Stack<String> newStack(Stack<String> data, int[] proses) {
+		for (int y = proses[0]; y <= proses[1]; y++) {
+			data.removeElementAt(proses[0]);
+		}
+		data.add(proses[0], String.valueOf(proses[2]));
+		return data;
+	}
+
+	
+	private static int[] proses(Stack<String> data, int e) {
+		int a = 0;
+		int Buka = 0;
+		int Tutup = e;
+		boolean f = true;
+		while (f && e <= data.size()) {
+			if (data.elementAt(e).equals("(")) {
+				if (data.elementAt(e + 2).equals("*")) {
+					a = a + (Integer.parseInt(data.elementAt(e + 1)) * Integer.parseInt(data.elementAt(e + 3)));
+					Buka = Buka + e;
+				} 
+				
+				else if (data.elementAt(e + 2).equals("+")) {
+					a = a + (Integer.parseInt(data.elementAt(e + 1)) + Integer.parseInt(data.elementAt(e + 3)));
+					Buka = Buka + e;
+				}
+
+				else if (data.elementAt(e + 2).equals("-")) {
+					a = a + (Integer.parseInt(data.elementAt(e + 1)) - Integer.parseInt(data.elementAt(e + 3)));
+					Buka = Buka + e;
+				}
+				
+			f = false;
+			
+			}
+			e--;
+		}
+		int[] c = { Buka, Tutup,a };
+		return c;
+	}
+
+	private static void print(Stack<String> data) {
+		System.out.print("");
+		System.out.print("= ");
+		for (int i = 0; i < data.size(); i++) {
+			System.out.print(data.elementAt(i));
+		}
+		System.out.print("");
+	}
+
+	private static void masukStack(String soal, Stack<String> data) {
+		for (int i = 0; i < soal.length(); i++) {
+			data.push(String.valueOf(soal.charAt(i)));
+		}
+
+	}
+	}
+
+
+	
